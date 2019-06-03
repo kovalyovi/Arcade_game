@@ -228,6 +228,9 @@ function removeTable() {
         restartButton.style.marginTop = "0";
         restartButton.style.position = 'static';
         restartButton.style.top = "0";
+        restartButton.innerHTML = "Restart";
+
+        document.querySelector('header').style.display = 'flex';
     }
 }
 

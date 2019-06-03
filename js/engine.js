@@ -93,7 +93,8 @@ var Engine = (function(global) {
             enemy.update(dt);
             player.update(enemy);
         });
-        if (player.winner) {
+        if (player.winner && player.alive) {
+            player.alive = false;
             victory();
         }
 
@@ -112,10 +113,14 @@ var Engine = (function(global) {
     }
 
 
-    function finishGame() {
+    function finishGame(winMessage = '') {
+        player.winner = false;
+        player.alive = false;
         let gameField = document.querySelector('canvas');
         let characters = document.querySelector('.characters');
         let restartButton = document.querySelector('button');
+
+        document.querySelector('header').style.display = 'none';
 
         gameField.style.display = 'none';
         characters.style.display = 'none';
@@ -129,13 +134,20 @@ var Engine = (function(global) {
         finishTable.classList.add('won');
 
         //header
+        winMessage = winMessage === '' ? "You are out of lives :(" : winMessage;
         const first = document.createElement('h1');
-        first.innerHTML = "Congratulations! You finished the game!";
+        first.innerHTML = winMessage;
 
         //paragraphs
+        let beginning = winMessage === "You are out of lives :(" ? "Though, you" : "You";
         const second = document.createElement('p');
-        second.innerHTML = "You got " + "<strong>" + document.querySelector('.score-text').innerHTML + "</strong>" + " Gems!";
+        second.innerHTML = beginning + " got " + "<strong>" + document.querySelector('.score-text').innerHTML + "</strong>" + " Gems!";
 
+        if (winMessage !== "You are out of lives :(") {
+            second.innerHTML = second.innerHTML + " Also, you have " + "<strong>" + lives + "</strong>" + " lives remaining.";
+        }
+
+        restartButton.innerHTML = "Try again?";
 
         finishTable.appendChild(first);
         finishTable.appendChild(second);
@@ -229,12 +241,9 @@ var Engine = (function(global) {
      */
 
     function victory() {
-        let count = 1;
-        return function() {
-            if (count < 2) {
-            }
-            count++;
-        }
+        player.alive = false;
+        player.winner = false;
+        finishGame("Congratulations! You successfully finished the game!");
     }
 
     /* Go ahead and load all of the images we know we're going to need to
