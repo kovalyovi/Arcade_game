@@ -148,7 +148,6 @@ class Gem {
         if (this.lives < 0) {
             this.remove();
         }
-        console.log(this.lives);
     }
 
     render() {
@@ -211,8 +210,26 @@ function restartGame() {
     initializeGame();
     document.querySelector('input').checked = true;
     clearInterval(gemInterval);
+
+    removeTable();
 }
 
+function removeTable() {
+    let table = document.querySelector('.won');
+    if (table) {
+        table.parentNode.removeChild(table);
+
+        let gameField = document.querySelector('canvas');
+        let characters = document.querySelector('.characters');
+        let restartButton = document.querySelector('button');
+
+        gameField.style.display = '';
+        characters.style.display = 'inherit';
+        restartButton.style.marginTop = "0";
+        restartButton.style.position = 'static';
+        restartButton.style.top = "0";
+    }
+}
 
 class Rock {
     constructor(column) {

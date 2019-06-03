@@ -106,10 +106,42 @@ var Engine = (function(global) {
 
     function checkLives() {
         if (lives === 0) {
-            alert("You are out of lives! Restart the game and try to get more diamonds :)");
+            finishGame();
             lives--;
         }
     }
+
+
+    function finishGame() {
+        let gameField = document.querySelector('canvas');
+        let characters = document.querySelector('.characters');
+        let restartButton = document.querySelector('button');
+
+        gameField.style.display = 'none';
+        characters.style.display = 'none';
+        restartButton.style.marginTop = "50px";
+        restartButton.style.position = 'fixed';
+        restartButton.style.top = "110px";
+
+
+        //creating message table
+        let finishTable = document.createElement('div');
+        finishTable.classList.add('won');
+
+        //header
+        const first = document.createElement('h1');
+        first.innerHTML = "Congratulations! You finished the game!";
+
+        //paragraphs
+        const second = document.createElement('p');
+        second.innerHTML = "You got " + "<strong>" + document.querySelector('.score-text').innerHTML + "</strong>" + " Gems!";
+
+
+        finishTable.appendChild(first);
+        finishTable.appendChild(second);
+
+        restartButton.parentNode.insertBefore(finishTable, restartButton);
+}
 
     function addNewEnemies() {
         while (allEnemies.length < 4) {
@@ -195,9 +227,6 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
-        // noop
-    }
 
     function victory() {
         let count = 1;
